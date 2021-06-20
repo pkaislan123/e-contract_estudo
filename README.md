@@ -16,3 +16,28 @@ contratos.
 Paradigma: Programação Orientada a Objetos
 Linguagem de programação: Java, jdk 15
 Padrão: MVC
+
+
+Uso: Ao executar o software, estará no menu principal, a partir dele entre nos sub-menus para  alterar, consultar, gerar relatório ou excluir "Produtos", "Safras", "Clientes" e "Contratos".
+
+--==[ E-CONTRACT - Gestão de Contratos ]==--
+	+===================================+
+	| 1 ---------------- PRODUTOS       |
+	| 2 ---------------- SAFRAS         |
+	| 3 ---------------- CLIENTES       |
+	| 4 ---------------- CONTRATOS      |
+	| 0 ---------------- SAIR           |
+	+===================================+
+ Opção: 
+
+Ao Entrar no Sub-Menu de "Contratos" há um sub-menu adicional para gerenciar o contrato, assim podendo gerenciar cargas e pagamentos no contrato selecionado.
+
+ Escolha uma das seguintes opções disponíveis
+	 --==[  GERENCIAR CONTRATO ]==--
+	+===================================+
+	| 1 ---------------- CARGAS         |
+	| 2 ---------------- PAGAMENTOS     |
+	| 0 ---------------- Retornar       |
+	+===================================+
+	 Opção: 
+
