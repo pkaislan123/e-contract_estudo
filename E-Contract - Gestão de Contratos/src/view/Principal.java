@@ -1,5 +1,7 @@
 package view;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -59,17 +61,15 @@ public class Principal {
 
 		Endereco[] ends3 = new Endereco[2];
 		ends3[0] = end5;
-		
-		
-		//veiculos
-		Veiculo v1 = new Veiculo( 1, 1, "RMI-0000") ;
-		Veiculo v2 = new Veiculo( 2, 2, "RMX-0000") ;
-		Veiculo v3 = new Veiculo( 3, 3, "RMZ-0000") ;
-		Veiculo v4 = new Veiculo( 4, 3, "RMG-0000") ;
-		Veiculo v5 = new Veiculo( 5, 2, "RMY-0000") ;
-		Veiculo v6 = new Veiculo( 6, 5, "RMH-0000") ;
 
-		
+		// veiculos
+		Veiculo v1 = new Veiculo(1, 1, "RMI-0000");
+		Veiculo v2 = new Veiculo(2, 2, "RMX-0000");
+		Veiculo v3 = new Veiculo(3, 3, "RMZ-0000");
+		Veiculo v4 = new Veiculo(4, 3, "RMG-0000");
+		Veiculo v5 = new Veiculo(5, 2, "RMY-0000");
+		Veiculo v6 = new Veiculo(6, 5, "RMH-0000");
+
 		ArrayList<Veiculo> vs1 = new ArrayList<>();
 		ArrayList<Veiculo> vs2 = new ArrayList<>();
 		ArrayList<Veiculo> vs3 = new ArrayList<>();
@@ -79,10 +79,10 @@ public class Principal {
 
 		vs1.add(v1);
 		vs1.add(v2);
-		
+
 		vs3.add(v3);
 		vs3.add(v4);
-		
+
 		vs3.add(v5);
 		vs4.add(v6);
 
@@ -93,14 +93,13 @@ public class Principal {
 		listClientes.add(new Contratante(listClientes.size() + 1, 1, "Fernando", "0055451", ends3, "12092798600"));
 		listClientes.add(new Contratante(listClientes.size() + 1, 1, "Cassio", "0055451", ends3, "12092798600"));
 
-		
-		listClientes.add(new Motorista(listClientes.size() + 1, 2, "Paulo", "0055451", ends3, "12092798600", 5414, vs1));
-		listClientes.add(new Motorista(listClientes.size() + 1, 2, "Marcio", "0055451", ends3, "12092798600", 4541, vs2));
-		listClientes.add(new Transportadora(listClientes.size() + 1, 2, "Ranilton", "0055451", ends3, "12092798600", vs3));
+		listClientes
+				.add(new Motorista(listClientes.size() + 1, 2, "Paulo", "0055451", ends3, "12092798600", 5414, vs1));
+		listClientes
+				.add(new Motorista(listClientes.size() + 1, 2, "Marcio", "0055451", ends3, "12092798600", 4541, vs2));
+		listClientes
+				.add(new Transportadora(listClientes.size() + 1, 2, "Ranilton", "0055451", ends3, "12092798600", vs3));
 
-		
-		
-		
 		ArrayList<Contratante> compradores = new ArrayList<>();
 		ArrayList<Contratante> vendedores = new ArrayList<>();
 
@@ -115,6 +114,24 @@ public class Principal {
 				(Contratante) listClientes.get(4), listSafra.get(0), 2000, 60, 0));
 		listContratos.add(new Contrato(listContratos.size() + 1, 0, compradores, vendedores,
 				(Contratante) listClientes.get(5), listSafra.get(0), 3000, 70, 0));
+
+		// cargas
+
+		Carga car1 = new Carga(1, 200, v1, LocalDate.parse("20/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+				null);
+		Carga car2 = new Carga(2, 200, v2, LocalDate.parse("21/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+				null);
+		Carga car3 = new Carga(3, 200, v3, LocalDate.parse("22/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+				null);
+		Carga car4 = new Carga(4, 200, v4, LocalDate.parse("23/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+				null);
+		
+		ArrayList<Carga> cargs1 = new ArrayList<>();
+		cargs1.add(car1);
+		cargs1.add(car2);
+
+		listContratos.get(0).setListCarga(cargs1);
+		
 
 		GerenciaProduto gProduto = new GerenciaProduto(listProdutos);
 		GerenciaPessoas gPessoas = new GerenciaPessoas(listClientes);
@@ -133,7 +150,7 @@ public class Principal {
 			System.out.println("\t| 0 ---------------- SAIR           |");
 			System.out.println("\t+===================================+");
 			System.out.println(" Opção: ");
-		    op = sc.nextInt();
+			op = sc.nextInt();
 
 			switch (op) {
 			case 1: {
@@ -280,47 +297,47 @@ public class Principal {
 								op2 = sc.nextInt();
 								switch (op2) {
 								case 1: {
-									
+
 									do {
-									imprimeSubMenu();
-									op2 = sc.nextInt();
-									gCarga = new GerenciaCarga( listClientes, listContratos.get(id_contrato));
+										imprimeSubMenu();
+										op2 = sc.nextInt();
+										gCarga = new GerenciaCarga(listClientes, listContratos.get(id_contrato));
 
-									
-									switch (op2) {
+										switch (op2) {
 
-									case 1: {
-										gCarga.incluir();
-									}
-										break;
-									case 2: {
-									}
-										break;
-									case 3: {
-										gCarga.consultar();
-									}
-										break;
-									case 4: {
-										gCarga.relatorio();
-									}
-										break;
-									case 5: {
-										gCarga.excluir();
+										case 1: {
+											gCarga.incluir();
+										}
+											break;
+										case 2: {
+											gCarga.alterar();
+										}
+											break;
+										case 3: {
+											gCarga.consultar();
+										}
+											break;
+										case 4: {
+											gCarga.relatorio();
+										}
+											break;
+										case 5: {
+											gCarga.excluir();
 
-									}
-										break;
-									}
+										}
+											break;
+										}
 
-								}while(op2 != 0);
-								}	break;
+									} while (op2 != 0);
+								}
+									break;
 								case 2: {
-									
+
 									do {
 										imprimeSubMenu();
 										op2 = sc.nextInt();
 										gPagamento = new GerenciaPagamento(listContratos.get(id_contrato));
 
-										
 										switch (op2) {
 
 										case 1: {
@@ -345,8 +362,7 @@ public class Principal {
 											break;
 										}
 
-									}while(op2 != 0);
-									
+									} while (op2 != 0);
 
 								}
 									break;
@@ -363,7 +379,7 @@ public class Principal {
 							gContratos.consultar();
 							break;
 						case 5:
-							//relatorio
+							// relatorio
 							break;
 						case 6:
 							gContratos.excluir();
@@ -402,7 +418,7 @@ public class Principal {
 		System.out.println("\t| 0 ---------------- Retornar       |");
 		System.out.println("\t+===================================+");
 		System.out.print("\t Opção: ");
-	
+
 	}
 
 	public static void imprimeSubMenuContratos() {
