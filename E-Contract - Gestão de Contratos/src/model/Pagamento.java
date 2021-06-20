@@ -5,12 +5,12 @@ import java.time.LocalDate;
 public class Pagamento {
 
 	private int id;
-	private Contrato contrato;
+	private double valor;
 	private LocalDate dataPagamento;
 	
-	public Pagamento(int id, Contrato contrato, LocalDate dataPagamento) {
+	public Pagamento(int id, double valor,  LocalDate dataPagamento) {
 		this.id = id;
-		this.contrato = contrato;
+		this.valor =valor;
 		this.dataPagamento = dataPagamento;
 	}
 
@@ -22,12 +22,14 @@ public class Pagamento {
 		this.id = id;
 	}
 
-	public Contrato getContrato() {
-		return contrato;
+	
+
+	public double getValor() {
+		return valor;
 	}
 
-	public void setContrato(Contrato contrato) {
-		this.contrato = contrato;
+	public void setValor(double valor) {
+		this.valor = valor;
 	}
 
 	public LocalDate getDataPagamento() {

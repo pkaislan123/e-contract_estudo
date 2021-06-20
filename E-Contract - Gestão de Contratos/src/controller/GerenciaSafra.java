@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import model.Cliente;
+import model.Contratante;
 import model.Produto;
 import model.Safra;
 
@@ -186,6 +188,12 @@ public class GerenciaSafra {
 		imprimir(posConsulta);
 	}
 
+	public void listarSafras() {
+		for (Safra sf : listSafra) {
+				System.out.println(listSafra.indexOf(sf) + " - Ano Plantio: " + sf.getAnoPlantio() + " - Ano Colheita: " + sf.getAnoColheita() + " - Produto: " + sf.getProduto().getNome());
+			
+		}
+	}
 	
 
 	
