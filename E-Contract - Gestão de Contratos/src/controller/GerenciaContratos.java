@@ -133,6 +133,84 @@ public class GerenciaContratos {
 
 	}
 	
+	
+	public void alterar() {
+		listarContratos();
+		int pos, op;
+		Contrato p;
+		int id_contratante, id_safra, unidadeMedida;
+		String tipos_unidades[] = { "Sacos", "Kgs" };
+		double quantidadeContratada, quantidadeAtendida, valorPorUnidade;
+		Safra safra;
+		ArrayList<Contratante> compradores = new ArrayList<>();
+		ArrayList<Contratante> vendedores = new ArrayList<>();
+		Contratante corretor = null;
+		if (listContratos.isEmpty()) {
+			System.out.println("\n Não há Contratos até o momento!\n Operação cancelada.\n");
+			return;
+		}
+
+		System.out.println("\n --==[ Alterar cadastro ]==--");
+		System.out.println("\n Digite a posição do cadastro que deseja alterar: ");
+		pos = num.nextInt();
+
+		if (isPosInvalida( pos)) {
+			System.out.println("\n Posição inexistente!\n Operação cancelada.\n");
+			return;
+		}
+		
+			p = listContratos.get(pos);
+		
+		imprimir(p.getId());
+
+		System.out.println("\n Deseja alterar este cadastro? 1.Sim | 2.Não");
+		op = num.nextInt();
+		if (op != 1) {
+			System.out.println("\n Operação cancelada, retornando ao menu anterior...\n");
+			return;
+		}
+		System.out.println("\n Digite os novos dados");
+		System.out.print(" Atualizar Compradores: \n");
+	
+		
+		System.out.print(" Safra do Novo Contrato: \n");
+		System.out.print(" Selecione o Id da Safra: ");
+		do {
+			gSafra.listarSafras();
+			id_safra = num.nextInt();
+		} while (id_safra < 0 || id_safra > listSafras.size());
+
+		safra = listSafras.get(id_safra);
+		p.setSafra(safra);
+		
+		System.out.print("\n Unidade de Medida ->  1 - Sacos | 2 - Kgs");
+		unidadeMedida = num.nextInt();
+		p.setUnidadeMedida(unidadeMedida);
+
+		System.out.print("\n Quantidade de " + tipos_unidades[unidadeMedida - 1] + ":\n");
+		quantidadeContratada = num.nextDouble();
+		p.setQuantidadeContratada(quantidadeContratada);
+
+		System.out.print("\n Valor por " + tipos_unidades[unidadeMedida - 1] + ":\n");
+		valorPorUnidade = num.nextDouble();
+		p.setValorPorUnidade(valorPorUnidade);
+
+		
+		System.out.println(" Cadastro alterado com sucesso!\n");
+
+	}
+	
+	
+	public boolean isPosInvalida( int pos) {
+		boolean result = false;
+
+			if (pos >= listContratos.size() || pos < 0) {
+				result = true;
+			}
+		
+		return result;
+	}
+	
 	public void listarContratos() {
 	
 		for (Contrato ct : listContratos) {
@@ -221,6 +299,87 @@ public class GerenciaContratos {
 			return;
 		}
 		imprimir(posConsulta);
+		
+		GerenciaCarga gCarga = new GerenciaCarga(listClientes, listContratos.get(posConsulta));
+		gCarga.relatorio();
+		
+		GerenciaPagamento gPagamento = new GerenciaPagamento(listContratos.get(posConsulta));
+		gPagamento.relatorio();
 	}
+	
+	public void relatorio() {
+		if (listContratos.isEmpty()) {
+			System.out.println("\n Não há Contratos cadastradas!\n");
+			return;
+		}
+
+		listarContratos();
+		
+		somatoriaGeral();
+	}
+	
+	
+	public void somatoriaGeral() {
+		
+		
+		double total_quantidade_contratada = 0;
+		double total_quantidade_recebida = 0;
+		double total_quantidade_carregada = 0;
+		String tipos_unidades[] = { "Sacos", "Kgs" };
+		String unidade = "";
+		double total_pago = 0;
+		
+		for (Contrato ct : listContratos) {
+			unidade =  tipos_unidades[ct.getUnidadeMedida()];
+
+			
+			GerenciaCarga gCarga = new GerenciaCarga(listClientes, ct);
+			
+			GerenciaPagamento gPagamento = new GerenciaPagamento(ct);
+				
+			total_quantidade_contratada += ct.getQuantidadeContratada();
+			total_quantidade_recebida += gCarga.getTotalRecebido();
+			total_quantidade_carregada += gCarga.getTotalCarregado();
+			total_pago += gPagamento.getTotalPago();
+			
+		
+			
+		}
+		System.out.println("\n------------ Somatórias---------");
+
+		System.out.println("\nQuantidade Total a Receber: "  + total_quantidade_contratada + " " + unidade );
+		System.out.println("Quantidade Total Recebida: "  + total_quantidade_recebida + " " + unidade);
+		
+		
+		double diferenca_recebimento = total_quantidade_contratada - total_quantidade_recebida;
+
+		if (diferenca_recebimento == 0) {
+			System.out.println("\nRecebimento Concluído");
+		} else if (diferenca_recebimento < 0) {
+			System.out.println("\nRecebimento Excedeu em " + diferenca_recebimento + " " + unidade);
+
+		} else if (diferenca_recebimento > 0) {
+			System.out.println("\nRecebimento Incompleto, falta " + diferenca_recebimento + " " + unidade);
+		}
+			
+		System.out.println("\nQuantidade Total a Carregar: "  + total_quantidade_recebida+ " " + unidade );
+		System.out.println("Quantidade Total Carregada: "  + total_quantidade_carregada  + " " + unidade);
+		
+		
+		double diferenca_carregamento = total_quantidade_recebida - total_quantidade_carregada;
+
+		if (diferenca_carregamento == 0) {
+			System.out.println("Carregamento Concluído");
+		} else if (diferenca_carregamento < 0) {
+			System.out.println("Carregamento Excedeu em " + diferenca_carregamento + " " + unidade);
+
+		} else if (diferenca_carregamento > 0) {
+			System.out.println("Carregamento Incompleto, falta " + diferenca_carregamento + " " + unidade);
+		}
+	}
+	
+	
+	
+	
 
 }

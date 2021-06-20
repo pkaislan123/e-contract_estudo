@@ -74,7 +74,7 @@ public void incluir() {
 	
 	
 public void alterar() {
-
+	listarCargas();
 	int pos, op;
 	Carga p;
 	int id_veiculo;
@@ -313,5 +313,29 @@ public boolean isPosInvalida( int pos) {
 		return data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		else
 			return "";
+	}
+	
+	
+	public double getTotalCarregado() {
+		double quantidade_carregada = 0;
+		double quantidade_recebida = 0;
+		for (int i = 0; i < listCarga.size(); i++) {
+			quantidade_recebida += listCarga.get(i).getPesoCarga();
+			if(listCarga.get(i).getDataCarregamento() != null) {
+				quantidade_carregada += quantidade_recebida;
+
+			}
+		}
+		return quantidade_carregada;
+	}
+	
+	public double getTotalRecebido() {
+		double quantidade_carregada = 0;
+		double quantidade_recebida = 0;
+		for (int i = 0; i < listCarga.size(); i++) {
+			quantidade_recebida += listCarga.get(i).getPesoCarga();
+			
+		}
+		return quantidade_recebida;
 	}
 }

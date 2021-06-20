@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import model.Pagamento;
+import model.Produto;
 import model.Cliente;
 import model.Contrato;
 import model.Veiculo;
@@ -61,6 +62,67 @@ public void incluir() {
 	
 	
 	
+public void alterar() {
+	listarPagamentos();
+	int pos, op;
+	Pagamento p;
+	LocalDate data_pag = null;
+
+	if (listPagamento.isEmpty()) {
+		System.out.println("\n Não há cadastros até o momento!\n Operação cancelada.\n");
+		return;
+	}
+
+	System.out.println("\n --==[ Alterar cadastro ]==--");
+	System.out.println("\n Digite a posição do cadastro que deseja alterar: ");
+	pos = num.nextInt();
+
+	if (isPosInvalida( pos)) {
+		System.out.println("\n Posição inexistente!\n Operação cancelada.\n");
+		return;
+	}
+	
+		p = listPagamento.get(pos);
+	
+	imprimir(p.getId());
+
+	System.out.println("\n Deseja alterar este cadastro? 1.Sim | 2.Não");
+	op = num.nextInt();
+	if (op != 1) {
+		System.out.println("\n Operação cancelada, retornando ao menu anterior...\n");
+		return;
+	}
+	System.out.println("\n Digite os novos dados");
+
+	   System.out.print(" Valor: ");
+       p.setValor(num.nextDouble());
+      boolean data_valida = false;
+   	do {
+       System.out.print(" Data do Pagamento: Ex: 19/06/2021\n");
+       try {
+        data_pag = LocalDate.parse(str.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+       data_valida = true;
+       p.setDataPagamento(data_pag);
+   	}catch(Exception e) {
+   		System.out.println("Data Invalida!");
+   	}
+       
+   	}while(!data_valida);
+      
+	
+	System.out.println(" Cadastro alterado com sucesso!\n");
+}
+
+
+public boolean isPosInvalida( int pos) {
+	boolean result = false;
+
+		if (pos >= listPagamento.size() || pos < 0) {
+			result = true;
+		}
+	
+	return result;
+}
 
 public void relatorio() {
 	if (listPagamento.isEmpty()) {
@@ -139,7 +201,7 @@ public void excluir() {
 	}
 	System.out.println("\n --==[ Exclusão de Pagamento ]==--");
 	System.out.print(" Informe a posição do Pagamento que deseja EXCLUIR: ");
-	posConsulta = num.nextInt() - 1;
+	posConsulta = num.nextInt();
 
 	if (posConsulta >= listPagamento.size() || posConsulta < 0) {
 		System.out.println("\n Posição inválida!\n");
@@ -162,5 +224,13 @@ public String formatarData(LocalDate data) {
 	return data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 }
 
+public double getTotalPago() {
+	double total_pago = 0;
+	for (int i = 0; i < listPagamento.size(); i++) {
+		total_pago += listPagamento.get(i).getValor();
+		
+	}
+	return total_pago;
+}
 	
 }

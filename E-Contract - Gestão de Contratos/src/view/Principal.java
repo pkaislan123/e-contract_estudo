@@ -17,6 +17,7 @@ import model.Contratante;
 import model.Contrato;
 import model.Endereco;
 import model.Motorista;
+import model.Pagamento;
 import model.Produto;
 import model.Safra;
 import model.Transportadora;
@@ -132,7 +133,18 @@ public class Principal {
 
 		listContratos.get(0).setListCarga(cargs1);
 		
+		Pagamento p1 = new Pagamento(1, 50000,LocalDate.parse("22/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")  ));
+		Pagamento p2 = new Pagamento(2, 60000,LocalDate.parse("22/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")  ));
+		Pagamento p3 = new Pagamento(3, 70000,LocalDate.parse("22/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")  ));
+		Pagamento p4 = new Pagamento(4, 80000,LocalDate.parse("22/06/2021", DateTimeFormatter.ofPattern("dd/MM/yyyy")  ));
 
+		ArrayList<Pagamento> pags1 = new ArrayList<>();
+		pags1.add(p1);
+		pags1.add(p2);
+		listContratos.get(0).setListPagamentos(pags1);
+		listContratos.get(1).setListPagamentos(pags1);
+
+		
 		GerenciaProduto gProduto = new GerenciaProduto(listProdutos);
 		GerenciaPessoas gPessoas = new GerenciaPessoas(listClientes);
 		GerenciaSafra gSafra = new GerenciaSafra(listSafra, listProdutos);
@@ -278,7 +290,7 @@ public class Principal {
 							gContratos.incluir();
 							break;
 						case 2: {
-
+							gContratos.alterar();
 						}
 							break;
 						case 3: {
@@ -345,6 +357,7 @@ public class Principal {
 										}
 											break;
 										case 2: {
+											gPagamento.alterar();
 										}
 											break;
 										case 3: {
@@ -379,7 +392,7 @@ public class Principal {
 							gContratos.consultar();
 							break;
 						case 5:
-							// relatorio
+							gContratos.relatorio();
 							break;
 						case 6:
 							gContratos.excluir();
