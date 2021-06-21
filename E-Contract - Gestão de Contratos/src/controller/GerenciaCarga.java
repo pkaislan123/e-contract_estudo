@@ -234,7 +234,7 @@ public void relatorio() {
 
 public void listarCargas() {
 	for(Carga ca : listCarga) {
-		System.out.println("ID: " + ca.getId() + " Peso: " +ca.getPesoCarga() + " Placa: " + ca.getVeiculo().getPlaca() +
+		System.out.println("POSIÇÃO: " + listCarga.indexOf(ca) + " Peso: " +ca.getPesoCarga() + " Placa: " + ca.getVeiculo().getPlaca() +
 		" Data Recebimento: " + formatarData( ca.getDataRecebimento() ) + " Data Carregamento: " +formatarData( ca.getDataCarregamento()));
 	}
 }

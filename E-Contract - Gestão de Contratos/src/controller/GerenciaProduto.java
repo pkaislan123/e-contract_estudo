@@ -30,11 +30,11 @@ public class GerenciaProduto {
         System.out.println("\n --==[ Cadastro de Produtos ]==--");
      
         System.out.print(" Nome: ");
-        nome = str.next();
+        nome = str.nextLine();
         System.out.print(" Descrição: ");
-        descricao = str.next();
+        descricao = str.nextLine();
         System.out.print(" Transgênia: ");
-        transgenia = str.next();
+        transgenia = str.nextLine();
 
        
         listProduto.add(new Produto(listProduto.size() + 1,nome, descricao, transgenia));
@@ -152,6 +152,7 @@ public class GerenciaProduto {
 	}
 	
 	public void consultar() {
+		listarProdutos();
 		int posConsulta = 0;
 
 		if (listProduto.isEmpty()) {
@@ -170,7 +171,11 @@ public class GerenciaProduto {
 		imprimir(posConsulta);
 	}
 
-	
+	public void listarProdutos() {
+		for(Produto p : listProduto) {
+			System.out.println("POSIÇÃO: " + listProduto.indexOf(p) + " Nome: " + p.getNome() + " Descrição: " + p.getDescricao() + " Transgenia: " + p.getTransgenia());
+		}
+	}
 
 	
 }

@@ -215,7 +215,7 @@ public class GerenciaContratos {
 	
 		for (Contrato ct : listContratos) {
 			if (ct instanceof Contrato) {
-				imprimir(ct.getId());
+				imprimir(listContratos.indexOf(ct));
 			}
 		}
 	}
@@ -242,7 +242,7 @@ public class GerenciaContratos {
 		System.out.println("\n Deseja EXCLUIR o Contrato listado? 1.Sim | 2.Não");
 		op = num.nextInt();
 		if (op == 1) {
-			listContratos.remove(posConsulta-1);
+			listContratos.remove(posConsulta);
 			System.out.println("\n Contrato excluído com sucesso!\n");
 		} else {
 			System.out.println(" Exclusão cancelada");
@@ -253,31 +253,38 @@ public class GerenciaContratos {
 	public void imprimir(int posConsulta) {
 		String tipos_unidades[] = { "Sacos", "Kgs" };
 		NumberFormat z = NumberFormat.getNumberInstance();
-		Contrato ct = listContratos.get(posConsulta-1);
+		Contrato ct = listContratos.get(posConsulta);
 		ArrayList<Contratante> compradores = ct.getCompradores();
-		ArrayList<Contratante> vendedores = ct.getCompradores();
+		ArrayList<Contratante> vendedores = ct.getVendedores();
 		Contratante corretor = ct.getCorretor();
 
 		String nome_compradores = "";
 		for(Contratante comp : compradores) {
 			nome_compradores +=  (comp.getNome());
-			if(compradores.indexOf(comp) == compradores.size())
+			if(compradores.indexOf(comp) == compradores.size() -1) {
+				
+			}else
 				nome_compradores += ", ";
 		}
 		String nome_vendedores = "";
 		for(Contratante vend : vendedores) {
 			nome_vendedores +=  (vend.getNome() );
-			if(vendedores.indexOf(vend) == vendedores.size())
+			if(vendedores.indexOf(vend) == vendedores.size() -1) {
+				
+			}
+			else {
 				nome_vendedores += ", ";
+
+			}
 		}
 		
-		System.out.println("ID: " + ct.getId() + " Descrição: " + z.format(ct.getQuantidadeContratada()) + " " +
+		System.out.println("POSIÇÃO:" + listContratos.indexOf(ct) + " Descrição: " + z.format(ct.getQuantidadeContratada()) + " " +
 				tipos_unidades[ct.getUnidadeMedida() ] + " de " + ct.getSafra().getProduto().getNome()
 				+ " da safra " + ct.getSafra().getAnoPlantio() + "/" + ct.getSafra().getAnoColheita() +
 				" no valor de " +  NumberFormat.getCurrencyInstance(ptBr).format(ct.getValorPorUnidade()) +
 				" por " + tipos_unidades[ct.getUnidadeMedida() ] + ", perfazendo um total de " +
 				 NumberFormat.getCurrencyInstance(ptBr).format(ct.getValorPorUnidade() * ct.getQuantidadeContratada())
-				 + ", entre " + nome_compradores + " X " + nome_vendedores + ", corretor: " + corretor.getNome()
+				 + ", entre " + nome_compradores + " X " + nome_vendedores + "; corretor: " + corretor.getNome()
 				);
 	}
 	

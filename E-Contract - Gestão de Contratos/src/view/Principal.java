@@ -37,6 +37,7 @@ public class Principal {
 		ArrayList<Carga> listCarga = new ArrayList();
 		ArrayList<Veiculo> listVeiculo = new ArrayList();
 
+		
 		listProdutos.add(new Produto(listProdutos.size() + 1, "SOJA", "AMARELA", "CONVENCIONAL"));
 		listProdutos.add(new Produto(listProdutos.size() + 1, "SORGO", "EM GRÃOS", "RR"));
 		listProdutos.add(new Produto(listProdutos.size() + 1, "MILHO", "TIPO II", "RR"));
@@ -439,7 +440,7 @@ public class Principal {
 		System.out.println("\t+===================================+");
 		System.out.println("\t| 1 ---------------- Cadastrar      |");
 		System.out.println("\t| 2 ---------------- Alterar        |");
-		System.out.println("\t| 3 ---------------- Gerencar       |");
+		System.out.println("\t| 3 ---------------- Gerenciar       |");
 		System.out.println("\t| 4 ---------------- Consultar      |");
 		System.out.println("\t| 5 ---------------- Relatório      |");
 		System.out.println("\t| 6 ---------------- Excluir        |");
