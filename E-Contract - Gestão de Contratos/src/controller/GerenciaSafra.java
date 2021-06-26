@@ -53,6 +53,8 @@ public class GerenciaSafra {
     }
 	
 	public void excluir() {
+		listarSafras();
+
 		int posConsulta, op;
 
 		if (listSafra.isEmpty()) {
@@ -112,6 +114,7 @@ public class GerenciaSafra {
 	}
 	
 	public void alterar() {
+		listarSafras();
 
 		int pos, op, id_safra;
 		Safra p;
@@ -143,16 +146,36 @@ public class GerenciaSafra {
 		}
 		System.out.println("\n Digite os novos dados");
 	
-		  System.out.print(" Ano Plantio: ");
-	        p.setAnoPlantio(num.nextInt());
-	        System.out.print(" Ano Colheita: ");
-	        p.setAnoColheita(num.nextInt());
-	        System.out.print(" Selecione o Id do Produto: ");
-	    	do {
-	    		gProduto.relatorio();
-	 			id_safra = num.nextInt();
-			} while (id_safra <= 0 || id_safra > listProduto.size());
-            p.setProduto(listProduto.get(id_safra));
+		
+		  System.out.println("Alterar Ano do Plantio: ?(Atual: " + p.getAnoPlantio() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+			  System.out.print(" Ano Plantio: ");
+		        p.setAnoPlantio(num.nextInt());
+		    }
+		
+		    System.out.println("Alterar Ano Colheita: ?(Atual: " + p.getAnoColheita() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+			  System.out.print(" Ano Colheita: ");
+		        p.setAnoColheita(num.nextInt());
+		    }
+		
+		    
+		    System.out.println("Alterar o Produto: ?(Atual: " + p.getProduto().getNome() + ")");
+		 			System.out.println("\n1.Sim | 2.Não");
+		 		    op = num.nextInt();
+		 		    if(op  == 1) {
+		 			  System.out.print(" Selecione o Id do Produto: ");
+		 				do {
+		 		    		gProduto.listarProdutos();
+		 		 			id_safra = num.nextInt();
+		 				} while (id_safra <= 0 || id_safra > listProduto.size());
+		 	            p.setProduto(listProduto.get(id_safra));		 		    }
+		
+	    
 	       
 		
 		System.out.println(" Cadastro alterado com sucesso!\n");
@@ -170,6 +193,7 @@ public class GerenciaSafra {
 	}
 	
 	public void consultar() {
+		listarSafras();
 		int posConsulta = 0;
 
 		if (listSafra.isEmpty()) {
@@ -190,7 +214,7 @@ public class GerenciaSafra {
 
 	public void listarSafras() {
 		for (Safra sf : listSafra) {
-				System.out.println(listSafra.indexOf(sf) + " - Ano Plantio: " + sf.getAnoPlantio() + " - Ano Colheita: " + sf.getAnoColheita() + " - Produto: " + sf.getProduto().getNome());
+				System.out.println("POSIÇÃO: " + listSafra.indexOf(sf) + " - Ano Plantio: " + sf.getAnoPlantio() + " - Ano Colheita: " + sf.getAnoColheita() + " - Produto: " + sf.getProduto().getNome());
 			
 		}
 	}

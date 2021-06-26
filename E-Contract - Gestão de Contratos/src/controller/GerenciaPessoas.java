@@ -158,6 +158,13 @@ public class GerenciaPessoas {
 			return;
 		}
 
+		if (tipoPessoa == 1)
+			listarContratantes();
+		else if (tipoPessoa == 2)
+			listarMotoristas();
+		else if (tipoPessoa == 3) {
+			listarTransportadora();
+		}
 		System.out.println("\n Digite a posição do cadastro que deseja alterar: ");
 		pos = num.nextInt();
 
@@ -175,31 +182,61 @@ public class GerenciaPessoas {
 		}
 		mostrar(cli);
 
-		System.out.println("\n Deseja alterar este cadastro? 1.Sim | 2.Não");
+		System.out.print("\n Deseja alterar este cadastro? 1.Sim | 2.Não");
 		op = num.nextInt();
 		if (op != 1) {
 			System.out.println("\n Operação cancelada, retornando ao menu anterior...\n");
 			return;
 		}
 
-		str.nextLine();
-		System.out.println("\n Digite os novos dados");
-		System.out.println("\n Nome:");
-		cli.setNome(str.nextLine());
-		System.out.println(" Inscrição Estadual:");
-		cli.setIe(str.nextLine());
+		System.out.println("Alterar Nome: ?(Atual: " + cli.getNome() + ")");
+		System.out.println("\n1.Sim | 2.Não");
+		op = num.nextInt();
+		if (op == 1) {
+			System.out.println("\n Nome:");
+			cli.setNome(str.nextLine());
+		}
+
+		System.out.println("Alterar IE: ?(Atual: " + cli.getIe() + ")");
+		System.out.println("\n1.Sim | 2.Não");
+		op = num.nextInt();
+		if (op == 1) {
+			System.out.println("\n Inscrição Estadual:");
+			cli.setIe(str.nextLine());
+		}
 
 		if (cli instanceof Contratante) {
-			System.out.println("CNPJ:");
-			((Contratante) listClientes.get(pos)).setCnpj(str.nextLine());
+
+			System.out.println("Alterar CNPJ: ?(Atual: " + ((Contratante) listClientes.get(pos)).getCnpj() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+			op = num.nextInt();
+			if (op == 1) {
+				System.out.println("\n CNPJ:");
+				((Contratante) listClientes.get(pos)).setCnpj(str.nextLine());
+			}
 			System.out.println("\n -Endereço");
-			editarEndereco(pos);
+			System.out.print("Deseja alterar seus endereços? - 1 - SIM | 2 - NÃO");
+			if (num.nextInt() == 1)
+				editarEndereco(pos);
 
 		} else if (cli instanceof Motorista) {
-			System.out.println(" CPF:");
-			((Motorista) listClientes.get(pos)).setCpf(str.nextLine());
-			System.out.println(" RNTRC:");
-			((Motorista) listClientes.get(pos)).setRntrc(num.nextInt());
+
+			System.out.println("Alterar CPF: ?(Atual: " + ((Motorista) listClientes.get(pos)).getCpf() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+			op = num.nextInt();
+			if (op == 1) {
+				System.out.println("\n CPF:");
+				((Motorista) listClientes.get(pos)).setCpf(str.nextLine());
+			}
+
+			System.out.println("Alterar RNTRC: ?(Atual: " + ((Motorista) listClientes.get(pos)).getRntrc() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+			op = num.nextInt();
+			if (op == 1) {
+				System.out.println("\n RNTRC:");
+				((Motorista) listClientes.get(pos)).setRntrc(num.nextInt());
+			}
+
 			System.out.println("\n -Endereço");
 			System.out.println("Deseja alterar seus endereços? - 1 - SIM | 2 - NÃO");
 			if (num.nextInt() == 1)
@@ -209,8 +246,15 @@ public class GerenciaPessoas {
 			if (num.nextInt() == 1)
 				editarVeiculoMotorista(pos);
 		} else {
-			System.out.println(" CNPJ: ");
-			((Transportadora) listClientes.get(pos)).setCnpj(str.nextLine());
+
+			System.out.println("Alterar CNPJ: ?(Atual: " + ((Transportadora) listClientes.get(pos)).getCnpj() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+			op = num.nextInt();
+			if (op == 1) {
+				System.out.println("\n CNPJ:");
+				((Transportadora) listClientes.get(pos)).setCnpj(str.nextLine());
+			}
+
 			System.out.println("\n -Endereço");
 			System.out.println("Deseja alterar seus endereços? - 1 - SIM | 2 - NÃO");
 			if (num.nextInt() == 1)
@@ -433,7 +477,7 @@ public class GerenciaPessoas {
 	}
 
 	public ArrayList<Veiculo> cadastrarVeiculos() {
-		String[] tipo_veiculo = { "Truco", "Bi-Truco", "LS","Bi-Trem", "Trimião" };
+		String[] tipo_veiculo = { "Truco", "Bi-Truco", "LS", "Bi-Trem", "Trimião" };
 
 		String placa;
 		int i = 0, op = 0, tipo;
@@ -484,76 +528,105 @@ public class GerenciaPessoas {
 
 	public void editarEndereco(int pos) {
 
-		int op = 0;
+		int op = 1;
+		int finalizar = 0;
 
-		int i = 1;
-		while (i < ((Cliente) listClientes.get(pos)).getEndereco().length && op == 1) {
-			System.out.println(" Logradouro: ");
-			((Cliente) listClientes.get(pos)).getEndereco()[i].setLogradouro(str.nextLine());
-			System.out.println(" Número: ");
-			((Cliente) listClientes.get(pos)).getEndereco()[i].setNumero(str.nextLine());
-			System.out.println(" Bairro: ");
-			((Cliente) listClientes.get(pos)).getEndereco()[i].setBairro(str.nextLine());
-			System.out.println(" Município: ");
-			((Cliente) listClientes.get(pos)).getEndereco()[i].setMunicipio(str.nextLine());
-			System.out.println(" CEP: ");
-			((Cliente) listClientes.get(pos)).getEndereco()[i].setCep(str.nextLine());
-			System.out.println(" Estado: ");
-			((Cliente) listClientes.get(pos)).getEndereco()[i].setEstado(str.nextLine());
-			i++;
-			if (i < ((Cliente) listClientes.get(pos)).getEndereco().length) {
+		do {
+
+			int opcao_endereco = -1;
+
+			mostrarEndereco(((Cliente) listClientes.get(pos)).getEndereco());
+			System.out.print("Selecione a posição do endereço para editar: -1 -> Sair");
+			opcao_endereco = num.nextInt();
+			if (opcao_endereco != -1) {
+				System.out.println(" Logradouro: ");
+				((Cliente) listClientes.get(pos)).getEndereco()[opcao_endereco].setLogradouro(str.nextLine());
+				System.out.println(" Número: ");
+				((Cliente) listClientes.get(pos)).getEndereco()[opcao_endereco].setNumero(str.nextLine());
+				System.out.println(" Bairro: ");
+				((Cliente) listClientes.get(pos)).getEndereco()[opcao_endereco].setBairro(str.nextLine());
+				System.out.println(" Município: ");
+				((Cliente) listClientes.get(pos)).getEndereco()[opcao_endereco].setMunicipio(str.nextLine());
+				System.out.println(" CEP: ");
+				((Cliente) listClientes.get(pos)).getEndereco()[opcao_endereco].setCep(str.nextLine());
+				System.out.println(" Estado: ");
+				((Cliente) listClientes.get(pos)).getEndereco()[opcao_endereco].setEstado(str.nextLine());
+
 				System.out.println(" Deseja laterar outro endereço? 1.Sim | 2.Não");
-				op = num.nextInt();
-			}
-		}
+				finalizar = num.nextInt();
+
+			} else
+				finalizar = 2;
+		} while (finalizar != 2);
+
 	}
 
 	public void editarVeiculoMotorista(int pos) {
 
 		int op = 1;
-		int tipo = 0;
+		int finalizar = 0;
 
-		int i = 0;
-		while (i < ((Motorista) listClientes.get(pos)).getVeiculos().size() && op == 1) {
-			do {
-				System.out.print(" Tipo: 1 -> Truco | 2 -> Bi-Truco | 3 -> LS | 4 -> Bi-Trem | 5 -> Trimião");
-				tipo = num.nextInt();
-			} while (tipo <= 0 || tipo > 5);
-			((Motorista) listClientes.get(pos)).getVeiculos().get(i).setTipo(tipo);
-			;
-			System.out.println(" Placa: ");
-			((Motorista) listClientes.get(pos)).getVeiculos().get(i).setPlaca(str.nextLine());
+		do {
 
-			i++;
-			if (i < ((Motorista) listClientes.get(pos)).getVeiculos().size()) {
+			int opcao_veiculo = -1;
+			int tipo = 0;
+
+			mostrarVeiculos(((Motorista) listClientes.get(pos)).getVeiculos());
+			System.out.print("Selecione a posição do Veiculo para editar: -1 -> Sair");
+			opcao_veiculo = num.nextInt();
+			if (opcao_veiculo != -1) {
+				do {
+					System.out.print(" Tipo: 1 -> Truco | 2 -> Bi-Truco | 3 -> LS | 4 -> Bi-Trem | 5 -> Trimião");
+					tipo = num.nextInt();
+				} while (tipo <= 0 || tipo > 5);
+				((Motorista) listClientes.get(pos)).getVeiculos().get(opcao_veiculo).setTipo(tipo);
+
+				System.out.println(" Placa: ");
+				((Motorista) listClientes.get(pos)).getVeiculos().get(opcao_veiculo).setPlaca(str.nextLine());
+
 				System.out.println(" Deseja alterar outro Veiculo? 1.Sim | 2.Não");
-				op = num.nextInt();
-			}
-		}
+
+				finalizar = num.nextInt();
+
+			} else
+				finalizar = 2;
+		} while (finalizar != 2);
+
 	}
 
 	public void editarVeiculoTransportadora(int pos) {
 
-		int op = 0;
-		int tipo = 0;
+		int op = 1;
+		int finalizar = 0;
 
-		int i = 1;
-		while (i < ((Transportadora) listClientes.get(pos)).getVeiculos().size() && op == 1) {
-			do {
-				System.out.print(" Tipo: 1 -> Truco | 2 -> Bi-Truco | 3 -> LS | 4 -> Bi-Trem | 5 -> Trimião");
-				tipo = num.nextInt();
-			} while (tipo <= 0 || tipo > 5);
-			((Transportadora) listClientes.get(pos)).getVeiculos().get(i).setTipo(tipo);
-			;
-			System.out.println(" Placa: ");
-			((Transportadora) listClientes.get(pos)).getVeiculos().get(i).setPlaca(str.nextLine());
+		do {
 
-			i++;
-			if (i < ((Transportadora) listClientes.get(pos)).getVeiculos().size()) {
+			int opcao_veiculo = -1;
+			int tipo = 0;
+
+			mostrarVeiculos(((Transportadora) listClientes.get(pos)).getVeiculos());
+			System.out.print("Selecione a posição do Veiculo para editar: -1 -> Sair");
+			opcao_veiculo = num.nextInt();
+			if (opcao_veiculo != -1) {
+				do {
+					System.out.print(" Tipo: 1 -> Truco | 2 -> Bi-Truco | 3 -> LS | 4 -> Bi-Trem | 5 -> Trimião");
+					tipo = num.nextInt();
+				} while (tipo <= 0 || tipo > 5);
+				((Transportadora) listClientes.get(pos)).getVeiculos().get(opcao_veiculo).setTipo(tipo);
+
+				System.out.println(" Placa: ");
+				((Transportadora) listClientes.get(pos)).getVeiculos().get(opcao_veiculo).setPlaca(str.nextLine());
+
 				System.out.println(" Deseja alterar outro Veiculo? 1.Sim | 2.Não");
-				op = num.nextInt();
-			}
-		}
+
+				finalizar = num.nextInt();
+
+			} else
+				finalizar = 2;
+		} while (finalizar != 2);
+		
+		
+		
 	}
 
 	public void listarContratantes() {
@@ -587,40 +660,40 @@ public class GerenciaPessoas {
 		String[] tipo_veiculo = { "Truco", "Bi-Truco", "LS", "Bi-Trem", "Trimião" };
 
 		for (Cliente c : listClientes) {
-			if (c instanceof Motorista ) {
+			if (c instanceof Motorista) {
 				for (Veiculo v : ((Motorista) c).getVeiculos()) {
-					System.out.print("Id: " + v.getId() + " Placa: " + v.getPlaca()  
-					+ " Tipo: " + tipo_veiculo[v.getTipo() + 1] + " Motorista: " + c.getNome() + "\n");
+					System.out.print("Id: " + v.getId() + " Placa: " + v.getPlaca() + " Tipo: "
+							+ tipo_veiculo[v.getTipo() + 1] + " Motorista: " + c.getNome() + "\n");
 				}
-			}else if( c instanceof Transportadora) {
+			} else if (c instanceof Transportadora) {
 				for (Veiculo v : ((Transportadora) c).getVeiculos()) {
-					System.out.print("Id: " + v.getId() + " Placa: " + v.getPlaca()  
-					+ " Tipo: " + tipo_veiculo[v.getTipo() + 1] + " Motorista: " + c.getNome() + "\n");
+					System.out.print("Id: " + v.getId() + " Placa: " + v.getPlaca() + " Tipo: "
+							+ tipo_veiculo[v.getTipo() + 1] + " Motorista: " + c.getNome() + "\n");
 				}
 			}
 		}
 	}
-	
+
 	public Veiculo returnVeiculo(int id_veiculo) {
 		ArrayList<Veiculo> veiculos = new ArrayList<>();
 		for (Cliente c : listClientes) {
-			if (c instanceof Motorista ) {
-					veiculos.addAll(((Motorista) c).getVeiculos());
-			}else if( c instanceof Transportadora) {
+			if (c instanceof Motorista) {
+				veiculos.addAll(((Motorista) c).getVeiculos());
+			} else if (c instanceof Transportadora) {
 				veiculos.addAll(((Transportadora) c).getVeiculos());
 
 			}
 		}
-		
+
 		return veiculos.get(id_veiculo);
 	}
-	
+
 	public int numVeiculos() {
 		int num_veiculos = 0;
 		for (Cliente c : listClientes) {
-			if (c instanceof Motorista ) {
+			if (c instanceof Motorista) {
 				num_veiculos += ((Motorista) c).getVeiculos().size();
-			}else if( c instanceof Transportadora) {
+			} else if (c instanceof Transportadora) {
 				num_veiculos += ((Transportadora) c).getVeiculos().size();
 
 			}

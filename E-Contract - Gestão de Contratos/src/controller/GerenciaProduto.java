@@ -42,6 +42,8 @@ public class GerenciaProduto {
     }
 	
 	public void excluir() {
+		listarProdutos();
+
 		int posConsulta, op;
 
 		if (listProduto.isEmpty()) {
@@ -99,7 +101,7 @@ public class GerenciaProduto {
 	}
 	
 	public void alterar() {
-
+		listarProdutos();
 		int pos, op;
 		Produto p;
 
@@ -129,12 +131,32 @@ public class GerenciaProduto {
 			return;
 		}
 		System.out.println("\n Digite os novos dados");
-		System.out.println("\n Nome: ");
-		p.setNome(str.nextLine());
-		System.out.println(" Descrição: ");
-		p.setDescricao(str.nextLine());
-		System.out.println(" Trangenia: ");
-		p.setTransgenia(str.nextLine());
+		  System.out.println("Alterar Nome: ?(Atual: " + p.getNome() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+			  System.out.print(" Nome: ");
+				p.setNome(str.nextLine());
+
+		    }
+		    
+		    
+		    System.out.println("Alterar Descrição: ?(Atual: " + p.getDescricao() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+			  System.out.print(" Descrição: ");
+				p.setDescricao(str.nextLine());
+		    }
+		    
+		    System.out.println("Alterar Transgenia: ?(Atual: " + p.getTransgenia() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+			  System.out.print(" Trangenia: ");
+				p.setTransgenia(str.nextLine());
+		    }
+	
 
 		
 		System.out.println(" Cadastro alterado com sucesso!\n");

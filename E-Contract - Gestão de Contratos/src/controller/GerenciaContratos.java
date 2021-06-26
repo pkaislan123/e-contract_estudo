@@ -118,13 +118,13 @@ public class GerenciaContratos {
 
 		safra = listSafras.get(id_safra);
 
-		System.out.print("\n Unidade de Medida ->  1 - Sacos | 2 - Kgs");
+		System.out.print("\n Unidade de Medida ->  0 - Sacos | 1 - Kgs");
 		unidadeMedida = num.nextInt();
 
-		System.out.print("\n Quantidade de " + tipos_unidades[unidadeMedida - 1] + ":\n");
+		System.out.print("\n Quantidade de " + tipos_unidades[unidadeMedida] + ":\n");
 		quantidadeContratada = num.nextDouble();
 
-		System.out.print("\n Valor por " + tipos_unidades[unidadeMedida - 1] + ":\n");
+		System.out.print("\n Valor por " + tipos_unidades[unidadeMedida] + ":\n");
 		valorPorUnidade = num.nextDouble();
 
 		listContratos.add(new Contrato(listContratos.size() + 1, unidadeMedida, compradores, vendedores, corretor,
@@ -138,7 +138,7 @@ public class GerenciaContratos {
 		listarContratos();
 		int pos, op;
 		Contrato p;
-		int id_contratante, id_safra, unidadeMedida;
+		int id_contratante, id_safra, unidadeMedida = 0;
 		String tipos_unidades[] = { "Sacos", "Kgs" };
 		double quantidadeContratada, quantidadeAtendida, valorPorUnidade;
 		Safra safra;
@@ -174,26 +174,57 @@ public class GerenciaContratos {
 	
 		
 		System.out.print(" Safra do Novo Contrato: \n");
-		System.out.print(" Selecione o Id da Safra: ");
-		do {
-			gSafra.listarSafras();
-			id_safra = num.nextInt();
-		} while (id_safra < 0 || id_safra > listSafras.size());
-
-		safra = listSafras.get(id_safra);
-		p.setSafra(safra);
 		
-		System.out.print("\n Unidade de Medida ->  1 - Sacos | 2 - Kgs");
-		unidadeMedida = num.nextInt();
-		p.setUnidadeMedida(unidadeMedida);
+		  System.out.println("Alterar Safra?(Safra; " + p.getSafra().getProduto().getNome()  + " " + p.getSafra().getAnoPlantio() + "/" + p.getSafra().getAnoColheita() + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+		    	System.out.println(" Selecione o Id da Safra: ");
+				do {
+					gSafra.listarSafras();
+					id_safra = num.nextInt();
+				} while (id_safra < 0 || id_safra > listSafras.size());
 
-		System.out.print("\n Quantidade de " + tipos_unidades[unidadeMedida - 1] + ":\n");
-		quantidadeContratada = num.nextDouble();
-		p.setQuantidadeContratada(quantidadeContratada);
+				safra = listSafras.get(id_safra);
+				p.setSafra(safra);
 
-		System.out.print("\n Valor por " + tipos_unidades[unidadeMedida - 1] + ":\n");
-		valorPorUnidade = num.nextDouble();
-		p.setValorPorUnidade(valorPorUnidade);
+		    }
+		
+		
+		  System.out.println("Alterar Unidade de Medida: ?(Unidade de Medida: " + tipos_unidades[p.getUnidadeMedida() ] + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+				System.out.print("\n Unidade de Medida ->  0 - Sacos | 1 - Kgs");
+				unidadeMedida = num.nextInt();
+				p.setUnidadeMedida(unidadeMedida);
+
+		    }
+		
+		    
+		    System.out.println("Alterar Quantidade: ?( " + p.getQuantidadeContratada() + " " + tipos_unidades[p.getUnidadeMedida() ] + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+		    	System.out.print("\n Quantidade de " + tipos_unidades[unidadeMedida] + ":\n");
+				quantidadeContratada = num.nextDouble();
+				p.setQuantidadeContratada(quantidadeContratada);
+
+
+		    }
+		
+		    System.out.println("Alterar Valor: ?( " + p.getValorPorUnidade() + " por " + tipos_unidades[p.getUnidadeMedida() ] + ")");
+			System.out.println("\n1.Sim | 2.Não");
+		    op = num.nextInt();
+		    if(op  == 1) {
+		    	System.out.print("Valor: ");
+				valorPorUnidade = num.nextDouble();
+				p.setValorPorUnidade(valorPorUnidade);
+
+
+		    }
+		
+
 
 		
 		System.out.println(" Cadastro alterado com sucesso!\n");

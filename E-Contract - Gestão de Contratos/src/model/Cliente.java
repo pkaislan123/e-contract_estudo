@@ -1,6 +1,6 @@
 package model;
 
-public class Cliente {
+public abstract class Cliente {
 
 	
 	private int id, tipo;
