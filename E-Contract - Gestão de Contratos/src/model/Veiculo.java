@@ -13,6 +13,14 @@ public class Veiculo {
 		this.placa = placa;
 	}
 	
+	
+	public Veiculo(int tipo, String placa) {
+		super();
+		this.tipo = tipo;
+		this.placa = placa;
+	}
+	
+	
 	public int getId() {
 		return id;
 	}

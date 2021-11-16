@@ -1,0 +1,302 @@
+-- Table: public.carga
+
+-- DROP TABLE public.carga;
+
+CREATE TABLE public.carga
+(
+    id integer NOT NULL DEFAULT nextval('carga_id_seq'::regclass),
+    peso_carga numeric NOT NULL,
+    id_veiculo integer,
+    data_recebimento character varying(40) COLLATE pg_catalog."default",
+    data_carregamento character varying(40) COLLATE pg_catalog."default",
+    id_contrato integer,
+    CONSTRAINT carga_pkey PRIMARY KEY (id),
+    CONSTRAINT carga_id_contrato_fkey FOREIGN KEY (id_contrato)
+        REFERENCES public.contrato (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT carga_id_veiculo_fkey FOREIGN KEY (id_veiculo)
+        REFERENCES public.veiculo (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.carga
+    OWNER to postgres;
+
+
+-- Table: public.cliente
+
+-- DROP TABLE public.cliente;
+
+CREATE TABLE public.cliente
+(
+    id integer NOT NULL DEFAULT nextval('cliente_id_seq'::regclass),
+    nome character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    ie character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT cliente_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.cliente
+    OWNER to postgres;
+
+-- Table: public.contratante
+
+-- DROP TABLE public.contratante;
+
+CREATE TABLE public.contratante
+(
+    id integer NOT NULL DEFAULT nextval('contratante_id_seq'::regclass),
+    cnpj character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    id_cliente integer,
+    CONSTRAINT contratante_pkey PRIMARY KEY (id),
+    CONSTRAINT contratante_id_cliente_fkey FOREIGN KEY (id_cliente)
+        REFERENCES public.cliente (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.contratante
+    OWNER to postgres;
+
+-- Table: public.contrato
+
+-- DROP TABLE public.contrato;
+
+CREATE TABLE public.contrato
+(
+    id integer NOT NULL DEFAULT nextval('contrato_id_seq'::regclass),
+    unidade_medida integer NOT NULL,
+    id_safra integer,
+    quantidade_contratada numeric NOT NULL,
+    valor_por_unidade numeric NOT NULL,
+    quantidade_atendida numeric,
+    id_corretor integer,
+    CONSTRAINT contrato_pkey PRIMARY KEY (id),
+    CONSTRAINT contrato_id_corretor_fkey FOREIGN KEY (id_corretor)
+        REFERENCES public.cliente (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT contrato_id_safra_fkey FOREIGN KEY (id_safra)
+        REFERENCES public.safra (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.contrato
+    OWNER to postgres;
+
+
+-- Table: public.contrato_comprador
+
+-- DROP TABLE public.contrato_comprador;
+
+CREATE TABLE public.contrato_comprador
+(
+    id_contrato integer NOT NULL,
+    id_cliente integer NOT NULL
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.contrato_comprador
+    OWNER to postgres;
+
+-- Table: public.contrato_vendedor
+
+-- DROP TABLE public.contrato_vendedor;
+
+CREATE TABLE public.contrato_vendedor
+(
+    id_contrato integer NOT NULL,
+    id_cliente integer NOT NULL
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.contrato_vendedor
+    OWNER to postgres;
+
+
+-- Table: public.endereco
+
+-- DROP TABLE public.endereco;
+
+CREATE TABLE public.endereco
+(
+    id integer NOT NULL DEFAULT nextval('endereco_id_seq'::regclass),
+    logradouro character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    numero character varying(5) COLLATE pg_catalog."default" DEFAULT NULL::character varying,
+    bairro character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    municipio character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    estado character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    cep character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    id_cliente integer,
+    CONSTRAINT endereco_pkey PRIMARY KEY (id),
+    CONSTRAINT endereco_id_cliente_fkey FOREIGN KEY (id_cliente)
+        REFERENCES public.cliente (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.endereco
+    OWNER to postgres;
+
+-- Table: public.motorista
+
+-- DROP TABLE public.motorista;
+
+CREATE TABLE public.motorista
+(
+    id integer NOT NULL DEFAULT nextval('motorista_id_seq'::regclass),
+    cpf character varying(12) COLLATE pg_catalog."default" NOT NULL,
+    rntrc integer NOT NULL,
+    id_cliente integer,
+    CONSTRAINT motorista_pkey PRIMARY KEY (id),
+    CONSTRAINT motorista_id_cliente_fkey FOREIGN KEY (id_cliente)
+        REFERENCES public.cliente (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.motorista
+    OWNER to postgres;
+
+-- Table: public.pagamento
+
+-- DROP TABLE public.pagamento;
+
+CREATE TABLE public.pagamento
+(
+    id integer NOT NULL DEFAULT nextval('pagamento_id_seq'::regclass),
+    valor numeric NOT NULL,
+    data_pagamento character varying(40) COLLATE pg_catalog."default",
+    id_contrato integer,
+    CONSTRAINT pagamento_pkey PRIMARY KEY (id),
+    CONSTRAINT pagamento_id_contrato_fkey FOREIGN KEY (id_contrato)
+        REFERENCES public.contrato (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.pagamento
+    OWNER to postgres;
+
+-- Table: public.produto
+
+-- DROP TABLE public.produto;
+
+CREATE TABLE public.produto
+(
+    id integer NOT NULL DEFAULT nextval('produto_id_seq'::regclass),
+    nome character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    descricao character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    transgenia character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT produto_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.produto
+    OWNER to postgres;
+
+
+-- Table: public.safra
+
+-- DROP TABLE public.safra;
+
+CREATE TABLE public.safra
+(
+    id integer NOT NULL DEFAULT nextval('safra_id_seq'::regclass),
+    ano_plantio integer NOT NULL,
+    ano_colheita integer NOT NULL,
+    id_produto integer NOT NULL,
+    CONSTRAINT safra_pkey PRIMARY KEY (id),
+    CONSTRAINT safra_id_produto_fkey FOREIGN KEY (id_produto)
+        REFERENCES public.produto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.safra
+    OWNER to postgres;
+
+
+-- Table: public.transportadora
+
+-- DROP TABLE public.transportadora;
+
+CREATE TABLE public.transportadora
+(
+    id integer NOT NULL DEFAULT nextval('transportadora_id_seq'::regclass),
+    cnpj character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    id_cliente integer,
+    CONSTRAINT transportadora_pkey PRIMARY KEY (id),
+    CONSTRAINT transportadora_id_cliente_fkey FOREIGN KEY (id_cliente)
+        REFERENCES public.cliente (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.transportadora
+    OWNER to postgres;
+
+-- Table: public.veiculo
+
+-- DROP TABLE public.veiculo;
+
+CREATE TABLE public.veiculo
+(
+    id integer NOT NULL DEFAULT nextval('veiculo_id_seq'::regclass),
+    tipo integer NOT NULL,
+    placa character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    id_cliente integer,
+    CONSTRAINT veiculo_pkey PRIMARY KEY (id),
+    CONSTRAINT veiculo_id_cliente_fkey FOREIGN KEY (id_cliente)
+        REFERENCES public.cliente (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.veiculo
+    OWNER to postgres;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

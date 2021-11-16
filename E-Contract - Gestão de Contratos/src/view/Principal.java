@@ -5,12 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import controller.GerenciaCarga;
-import controller.GerenciaContratos;
-import controller.GerenciaPagamento;
-import controller.GerenciaPessoas;
-import controller.GerenciaProduto;
-import controller.GerenciaSafra;
+import controller.gerencia.GerenciaCarga;
+import controller.gerencia.GerenciaContratos;
+import controller.gerencia.GerenciaPagamento;
+import controller.gerencia.GerenciaClientes;
+import controller.gerencia.GerenciaProduto;
+import controller.gerencia.GerenciaSafra;
 import model.Carga;
 import model.Cliente;
 import model.Contratante;
@@ -30,25 +30,16 @@ public class Principal {
 	public static void main(String[] args) {
 		sc = new Scanner(System.in);
 		int op = 0, op2;
-		
-		ArrayList<Produto> listProdutos = new ArrayList();
-		ArrayList<Cliente> listClientes = new ArrayList();
-		ArrayList<Safra> listSafra = new ArrayList();
-		ArrayList<Contrato> listContratos = new ArrayList();
-		ArrayList<Carga> listCarga = new ArrayList();
-		ArrayList<Veiculo> listVeiculo = new ArrayList();
-		
-		
 
-		GerenciaProduto gProduto = new GerenciaProduto(listProdutos);
-		GerenciaPessoas gPessoas = new GerenciaPessoas(listClientes);
-		GerenciaSafra gSafra = new GerenciaSafra(listSafra, listProdutos);
-		GerenciaContratos gContratos = new GerenciaContratos(listContratos, listClientes, listSafra, listProdutos);
-		GerenciaCarga gCarga;
-		GerenciaPagamento gPagamento;
+		GerenciaProduto gProduto = new GerenciaProduto();
+		GerenciaSafra gSafra = new GerenciaSafra(gProduto);
+		GerenciaClientes gCliente = new GerenciaClientes();
+		GerenciaContratos gContratos = new GerenciaContratos(gSafra, gCliente);
+		GerenciaCarga gCarga = null;
+		GerenciaPagamento gPagamento = null;
 
 		do {
-			System.out.println(" --==[ E-CONTRACT - Gestão de Contratos ]==--");
+			System.out.println("\n\t --==[ E-CONTRACT - Gestão de Contratos ]==--");
 			System.out.println("\t+===================================+");
 			System.out.println("\t| 1 ---------------- PRODUTOS       |");
 			System.out.println("\t| 2 ---------------- SAFRAS         |");
@@ -94,7 +85,7 @@ public class Principal {
 			}
 				break;
 			case 2: {
-				if (listProdutos.isEmpty())
+				if (gProduto.contemProdutos() <= 0)
 					System.out.println("Cadastre um produto antes de continuar...");
 				else {
 					do {
@@ -132,25 +123,26 @@ public class Principal {
 				break;
 			case 3: {
 				do {
-					System.out.println("\t --==[  E-CONTRACT - CLIENTES ]==--");
+
+					System.out.println("\t --==[  E-CONTRACT - Clientes ]==--");
 					imprimeSubMenu();
 					op2 = sc.nextInt();
 
 					switch (op2) {
 					case 1:
-						gPessoas.incluir();
+						gCliente.incluir();
 						break;
 					case 2:
-						gPessoas.alterar();
+						gCliente.alterar();
 						break;
 					case 3:
-						gPessoas.consultar();
+						gCliente.consultar();
 						break;
 					case 4:
-						gPessoas.relatorio();
+						gCliente.relatorio();
 						break;
 					case 5:
-						gPessoas.excluir();
+						gCliente.excluir();
 						break;
 					case 0:
 						System.out.println("\n retornar...\n");
@@ -164,14 +156,14 @@ public class Principal {
 			}
 				break;
 			case 4: {
-				if (listProdutos.isEmpty()) {
+				if (gProduto.contemProdutos() <= 0) {
 					System.out.println("Cadastre um produto antes de continuar...");
 
-				} else if (listSafra.isEmpty()) {
+				} else if (gSafra.contemSafras() <= 0) {
 					System.out.println("Cadastre uma safra antes de continuar...");
 
-				} else if (listClientes.isEmpty()) {
-					System.out.println("Cadastre Contratantes antes de continuar...");
+				} else if (gCliente.contem(0) <= 0 && gCliente.contem(1) <= 0 && gCliente.contem(2) <= 0) {
+					System.out.println("Cadastre Contratantes, Motoristas/Transportadores antes de continuar...");
 
 				} else {
 
@@ -189,16 +181,22 @@ public class Principal {
 						}
 							break;
 						case 3: {
-							if (listContratos.isEmpty()) {
+							if (gContratos.contem() <= 0) {
 								System.out.println("Não há Contratos para Gerenciar");
 							} else {
 								int id_contrato = -1;
+								Contrato contrato = null;
 								do {
 									System.out.println(" -Selecione o ID do Contrato que deseja Gerenciar: ");
-									gContratos.listarContratos();
+									gContratos.relatorio();
 									id_contrato = sc.nextInt();
+									contrato = gContratos.posicaoValida(id_contrato);
+									if (contrato == null) {
+										System.out.println("Posição Inválida!");
 
-								} while (id_contrato < 0 && id_contrato > listContratos.size());
+									} else {
+									}
+								} while (contrato == null);
 
 								imprimeSubMenuGerenciarContrato();
 								op2 = sc.nextInt();
@@ -206,50 +204,46 @@ public class Principal {
 								case 1: {
 
 									do {
-										if(gPessoas.numVeiculos() <= 0) {
-											System.out.println("Cadastre Motorista Autonomos ou Transportador para Gerenciar Cargas!");
-										    op2= 0;
-										}else {
-											
-										imprimeSubMenu();
-										op2 = sc.nextInt();
-										
-									
-										
-										
-										gCarga = new GerenciaCarga(listClientes, listContratos.get(id_contrato));
+										if (gCliente.numVeiculos() <= 0) {
+											System.out.println(
+													"Cadastre Motorista Autonomos ou Transportadora para Gerenciar Cargas!");
+											op2 = 0;
+										} else {
 
-									
+											imprimeSubMenu();
+											op2 = sc.nextInt();
 
-										if(gCarga.getTotalRecebido()  > 0) {
-										
+											gCarga = new GerenciaCarga(gCliente, contrato);
+
 											switch (op2) {
-										case 1: {
-											gCarga.incluir();
-										}
-											break;
-										case 2: {
-											gCarga.alterar();
-										}
-											break;
-										case 3: {
-											gCarga.consultar();
-										}
-											break;
-										case 4: {
-											gCarga.relatorio();
-										}
-											break;
-										case 5: {
-											gCarga.excluir();
+											case 1: {
+												gCarga.incluir(contrato.getId());
+											}
+												break;
+											case 2: {
+												if (gCarga.getTotalRecebido(contrato.getId()) > 0) {
+													gCarga.alterar(contrato.getId());
 
-										}
-											break;
-										}
-										
-										}else {
-											System.out.println("Nenhuma Carga Registrada!");
-										}
+												} else {
+													System.out.println("Nenhuma Carga Registrada!");
+
+												}
+											}
+												break;
+											case 3: {
+												gCarga.consultar(contrato.getId());
+											}
+												break;
+											case 4: {
+												gCarga.relatorio(contrato.getId());
+											}
+												break;
+											case 5: {
+												gCarga.excluir(contrato.getId());
+
+											}
+												break;
+											}
 
 										}
 									} while (op2 != 0);
@@ -260,28 +254,28 @@ public class Principal {
 									do {
 										imprimeSubMenu();
 										op2 = sc.nextInt();
-										gPagamento = new GerenciaPagamento(listContratos.get(id_contrato));
+										gPagamento = new GerenciaPagamento(contrato);
 
 										switch (op2) {
 
 										case 1: {
-											gPagamento.incluir();
+											gPagamento.incluir(contrato.getId());
 										}
 											break;
 										case 2: {
-											gPagamento.alterar();
+											gPagamento.alterar(contrato.getId());
 										}
 											break;
 										case 3: {
-											gPagamento.consultar();
+											gPagamento.consultar(contrato.getId());
 										}
 											break;
 										case 4: {
-											gPagamento.relatorio();
+											gPagamento.relatorio(contrato.getId());
 										}
 											break;
 										case 5: {
-											gPagamento.excluir();
+											gPagamento.excluir(contrato.getId());
 
 										}
 											break;

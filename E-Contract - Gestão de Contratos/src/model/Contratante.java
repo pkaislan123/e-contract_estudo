@@ -1,18 +1,29 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Contratante extends Cliente {
 
-	public Contratante(int id, int tipo, String nome, String ie, Endereco[] endereco, String cnpj) {
-		super(id, tipo, nome, ie, endereco);
+	private String cnpj;
+
+
+	
+	public Contratante(int id, String nome, String ie, ArrayList<Endereco> enderecos, String cnpj) {
+		super(id, nome, ie, enderecos);
 		this.cnpj = cnpj;
 		// TODO Auto-generated constructor stub
 	}
 
 
 
-	private String cnpj;
+	public Contratante(String nome, String ie, ArrayList<Endereco> enderecos, String cnpj) {
+		super(nome, ie, enderecos);
+		this.cnpj = cnpj;
+		// TODO Auto-generated constructor stub
+	}
 
-	
+
+
 	public String getCnpj() {
 		return cnpj;
 	}

@@ -21,6 +21,15 @@ public class Carga {
 	}
 	
 	
+	public Carga(double pesoCarga, Veiculo veiculo, LocalDate dataRecebimento, LocalDate dataCarregamento) {
+		this.pesoCarga = pesoCarga;
+		this.veiculo = veiculo;
+		this.dataRecebimento = dataRecebimento;
+		this.dataCarregamento = dataCarregamento;
+	}
+	
+	
+	
 	public int getId() {
 		return id;
 	}

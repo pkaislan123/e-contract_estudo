@@ -13,6 +13,11 @@ public class Pagamento {
 		this.valor =valor;
 		this.dataPagamento = dataPagamento;
 	}
+	
+	public Pagamento( double valor,  LocalDate dataPagamento) {
+		this.valor =valor;
+		this.dataPagamento = dataPagamento;
+	}
 
 	public int getId() {
 		return id;

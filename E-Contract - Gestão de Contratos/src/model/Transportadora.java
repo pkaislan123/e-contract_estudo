@@ -9,12 +9,20 @@ public class Transportadora extends Cliente{
 	private  ArrayList<Veiculo> veiculos;
 	
 	
-	
-	
-	public Transportadora(int id, int tipo, String nome, String ie, Endereco[] endereco, String cnpj, ArrayList<Veiculo> veiculos) {
-		super(id, tipo, nome, ie, endereco);
+
+	public Transportadora(int id, String nome, String ie, ArrayList<Endereco> enderecos, String cnpj ) {
+		super(id, nome, ie, enderecos);
 		this.cnpj = cnpj;
-		this.veiculos = veiculos;
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+
+	public Transportadora(String nome, String ie, ArrayList<Endereco> enderecos, String cnpj) {
+		super(nome, ie, enderecos);
+		this.cnpj = cnpj;
+
 		// TODO Auto-generated constructor stub
 	}
 

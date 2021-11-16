@@ -1,0 +1,114 @@
+create table produto(
+ id SERIAL primary key,
+ nome varchar(200) not null,
+ descricao varchar(200) not null,  
+ transgenia varchar(200) not null
+
+);
+
+
+create table safra(
+ id SERIAL primary key,
+ ano_plantio integer not null,
+ ano_colheita  integer not null,
+ id_produto integer not null,
+ FOREIGN KEY (id_produto) REFERENCES produto (id)
+
+);
+
+create table cliente(
+ id SERIAL primary key,
+ nome varchar(200) not null,
+ ie varchar(200) not null
+
+);
+
+create table contratante(
+ id SERIAL primary key,
+ cnpj varchar(20) not null,
+ id_cliente integer REFERENCES cliente (id) on delete cascade
+
+);
+
+
+create table motorista(
+ id SERIAL primary key,
+ cpf varchar(12) not null,
+ rntrc integer not null,	
+ id_cliente integer REFERENCES cliente (id) on delete cascade
+
+);
+
+create table transportadora(
+ id SERIAL primary key,
+ cnpj varchar(20) not null,
+ id_cliente integer REFERENCES cliente (id) on delete cascade
+
+);
+
+create table endereco(
+ id SERIAL primary key,
+ logradouro varchar(200) not null,
+ numero varchar(5) default null,
+ bairro varchar(200) not null,
+ municipio varchar(200) not null,
+ estado varchar(100) not null,
+ cep varchar(100) not null,	
+	
+ id_cliente integer REFERENCES cliente (id) on delete cascade
+
+);
+
+create table veiculo(
+ id SERIAL primary key,
+ tipo integer not null,
+ placa varchar(10) not null,	
+ id_cliente integer REFERENCES cliente (id) on delete cascade
+
+);
+
+create table contrato(
+ id SERIAL primary key,
+ unidade_medida integer not null,
+ id_safra integer REFERENCES safra (id) ,
+ quantidade_contratada decimal not null,
+ valor_por_unidade decimal  not null,
+ quantidade_atendida decimal default null,
+ id_corretor integer references cliente (id)	
+	
+
+);
+
+
+create table contrato_comprador(
+ id_contrato integer not null,
+ id_cliente integer not null
+);
+
+create table contrato_vendedor(
+ id_contrato integer not null,
+ id_cliente integer not null
+);
+
+create table carga(
+ id SERIAL primary key,
+ peso_carga decimal not null,
+ id_veiculo integer REFERENCES veiculo (id) ,
+ data_recebimento varchar(40),
+ data_carregamento varchar(40),
+ id_contrato integer references contrato(id)	
+	
+
+);
+
+create table pagamento(
+ id SERIAL primary key,
+ valor decimal not null,
+ data_pagamento varchar(40),
+ id_contrato integer references contrato(id)	
+
+);
+
+
+
+

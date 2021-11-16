@@ -9,18 +9,27 @@ public class Motorista extends Cliente{
 	private ArrayList<Veiculo> veiculos;
 	private String cpf;
 	
-	public Motorista(int id, int tipo, String nome, String ie, Endereco[] endereco,String _cpf, int rntrc, ArrayList<Veiculo> veiculos) {
-		
-		super(id, tipo, nome, ie, endereco);
+	
+
+
+	public Motorista(int id, String nome, String ie, ArrayList<Endereco> enderecos, String cpf, int rntrc) {
+		super(id, nome, ie, enderecos);
+		this.cpf = cpf;
 		this.rntrc = rntrc;
-		this.veiculos = veiculos;
-		this.cpf = _cpf;
-		
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
+
+
+	public Motorista(String nome, String ie, ArrayList<Endereco> enderecos, String cpf, int rntrc) {
+		super(nome, ie, enderecos);
+		this.cpf = cpf;
+		this.rntrc = rntrc;
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public String getCpf() {
 		return cpf;
 	}

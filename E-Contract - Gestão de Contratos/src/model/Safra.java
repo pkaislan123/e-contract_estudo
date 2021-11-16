@@ -12,6 +12,12 @@ public class Safra {
 		this.anoColheita = anoColheita;
 		this.produto = p;
 	}
+	
+	public Safra( int anoPlantio, int anoColheita, Produto p) {
+		this.anoPlantio = anoPlantio;
+		this.anoColheita = anoColheita;
+		this.produto = p;
+	}
 
 
 	public int getId() {

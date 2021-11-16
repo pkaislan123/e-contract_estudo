@@ -28,6 +28,20 @@ public class Contrato {
 		this.quantidadeAtendida = quantidadeAtendida;
 	}
 
+	
+	public Contrato(int unidadeMedida,ArrayList<Contratante>compradores, ArrayList<Contratante> vendedores,
+			Contratante corretor, Safra safra, double quantidadeContratada, double valorPorUnidade,
+			double quantidadeAtendida) {
+		this.unidadeMedida = unidadeMedida;
+		this.compradores = compradores;
+		this.vendedores = vendedores;
+		this.corretor = corretor;
+		this.safra = safra;
+		this.quantidadeContratada = quantidadeContratada;
+		this.valorPorUnidade = valorPorUnidade;
+		this.quantidadeAtendida = quantidadeAtendida;
+	}
+
 
 	public int getId() {
 		return id;
